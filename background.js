@@ -107,8 +107,8 @@ function createGalleryHtml(images) {
                     justify-content: center;
                     z-index: 10000; /* Ensure elements inside are clickable */
                 }
-                .lightbox img { max-width: 90%; max-height: 80vh; border: 5px solid white; border-radius: 8px; object-fit: contain; display: block; margin: auto;}
-                .lightbox-caption { background: rgba(0, 0, 0, 0.7); color: white; padding: 10px; margin-top: 10px; border-radius: 5px; max-width: 80%; }
+                .lightbox img { max-width: 90%; max-height: 80vh; border: 5px solid white; border-radius: 8px; xobject-fit: contain; display: block; margin: auto;}
+                .lightbox-caption { background: rgba(0, 0, 0, 0.7); color: white; padding: 10px; margin-top: 10px; border-radius: 5px; max-width: 70%; }
                 .lightbox-nav { position: fixed; top: 50%; transform: translateY(-50%); font-size: 50px; color: white; cursor: pointer; z-index: 10001; }
                 .prev { left: 20px; }
                 .next { right: 20px; }
