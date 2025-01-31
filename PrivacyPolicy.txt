@@ -9,4 +9,4 @@ The extension requests limited permissions:
 - `host_permissions` for `bbc.co.uk`: To ensure images are correctly processed.
 
 ## Contact
-If you have any privacy concerns, please contact [Your Email or GitHub Issues Page].
+If you have any privacy concerns, please contact https://github.com/bumface11/BBCgalleryview/issues.
