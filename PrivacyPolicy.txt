@@ -1,0 +1,12 @@
+# Privacy Policy for BBC News Gallery Viewer
+
+## No Data Collection
+This extension does not collect, store, or share any personal data. It only processes webpage content on BBC News ("Your Pictures" articles) to extract images for the gallery.
+
+## Permissions & Justification
+The extension requests limited permissions:
+- `activeTab` & `scripting`: To extract images from the active page.
+- `host_permissions` for `bbc.co.uk`: To ensure images are correctly processed.
+
+## Contact
+If you have any privacy concerns, please contact [Your Email or GitHub Issues Page].
