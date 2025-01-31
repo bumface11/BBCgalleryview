@@ -1,0 +1,157 @@
+.lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.lightbox img {
+    max-width: 99vmin;
+    max-height: 80vmin;
+    border: 0.1vmin solid #ccc;
+    border-radius: 1vmin;
+}
+.lightbox-caption {
+    position: fixed;
+    bottom: 2vmin;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 1.5vmin;
+    border-radius: 0.8vmin;
+    font-size: 2.5vmin;
+    display: none;
+    z-index: 1001;
+}
+.caption-toggle {
+    position: absolute;
+    bottom: 2vmin;
+    right: 2vmin;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 1vmin;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.6vmin;
+}
+.caption-close {
+    margin-left: 1vmin;
+    cursor: pointer;
+    font-size: 1.6vmin;
+    color: white;
+}
+.lightbox-close {
+    position: absolute;
+    top: 2vmin;
+    right: 2vmin;
+    color: white;
+    font-size: 3vmin;
+    cursor: pointer;
+}
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 5vmin;
+    cursor: pointer;
+    z-index: 1001;
+    user-select: none;
+}
+.lightbox-nav.prev {
+    left: 2vmin;
+}
+.lightbox-nav.next {
+    right: 2vmin;
+}
+.gallery-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2vmin;
+    justify-content: center;
+    margin: 2vmin;
+}
+.gallery-item img {
+    max-width: 20vmin;
+    max-height: 15vmin;
+    cursor: pointer;
+    border: 0.2vmin solid #ccc;
+    border-radius: 1vmin;
+}
+.minimized-icon {
+    position: fixed;
+    bottom: 2vmin;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 1vmin;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.6vmin;
+    display: none;
+    z-index: 1002;
+}
+.caption-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.gallery-prompt {
+    position: fixed;
+    top: 2vmin;
+    right: 2vmin;
+    background: rgba(255, 255, 0, 0.9);
+    color: black;
+    padding: 1.5vmin;
+    border-radius: 1vmin;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    gap: 1vmin;
+    font-size: 2.5vmin;
+    box-shadow: 0px 0.4vmin 0.6vmin rgba(0, 0, 0, 0.2);
+}
+.gallery-prompt button {
+    padding: 1vmin;
+    border: none;
+    border-radius: 0.5vmin;
+    cursor: pointer;
+    font-size: 1.4vmin;
+}
+.gallery-prompt .yes {
+    background: #4caf50;
+    color: white;
+}
+.gallery-prompt .no {
+    background: #f44336;
+    color: white;
+}
+.gallery-inline-button {
+    display: inline-block;
+    margin-left: 1vmin;
+    background: rgba(255, 255, 0, 0.9);
+    color: black;
+    padding: 0.5vmin 1vmin;
+    border-radius: 0.5vmin;
+    cursor: pointer;
+    font-size: 2.5vmin;
+}
+.exit-gallery {
+    position: fixed;
+    top: 2vmin;
+    left: 2vmin;
+    background: rgba(255, 0, 0, 0.8);
+    color: white;
+    padding: 1vmin;
+    border-radius: 0.5vmin;
+    cursor: pointer;
+    font-size: 2.5vmin;
+    z-index: 2000;
+}
