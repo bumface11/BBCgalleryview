@@ -104,15 +104,16 @@ function createGalleryHtml(images) {
                 }
             }
 
-        .gallery-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive columns */
-            grid-auto-rows: minmax(200px, auto); /* Key change: Auto row heights */
-            gap: 10px;
-            padding: 16px;
-            justify-content: center;
-            z-index: 1000;
-        }
+            .gallery-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive columns */
+                grid-auto-rows: minmax(200px, auto);
+                grid-auto-flow: dense; /* Key for packing items tightly */
+                gap: 10px;
+                padding: 16px;
+                justify-content: center;
+                z-index: 1000;
+            }
 
         .gallery-item {
             cursor: pointer;
