@@ -44,7 +44,7 @@ function extractImagesForGallery() {
         const img = figure.querySelector('img');
         const caption = figure.querySelector('figcaption');
         if (img && caption) {
-            images.push({ src: img.src, caption: caption.textContent.trim() });
+            images.push({ src: img.src, caption: caption.textContent.replace("Image caption,","").trim() });
         }
     });
     return images;
@@ -145,7 +145,30 @@ function createGalleryHtml(images) {
                     justify-content: center;
                     z-index: 10000; /* Ensure elements inside are clickable */
                 }
-                .lightbox img { max-width: 90%; max-height: 80vh; border: 5px solid white; border-radius: 8px; xobject-fit: contain; display: block; margin: auto;}
+               /* Dots Navigation */
+                .dot-container {
+                    position: absolute;
+                    top: 10px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    display: flex;
+                    gap: 6px;
+                }
+
+                .dot {
+                    width: 6px;
+                    height: 6px;
+                    border-radius: 50%;
+                    background: gray;
+                    opacity: 0.5;
+                    transition: opacity 0.3s, background 0.3s;
+                }
+
+                .dot.active {
+                    background: white;
+                    opacity: 1;
+                }
+                .lightbox img { max-width: 90%; max-height: 75vh; border: 5px solid white; border-radius: 8px; xobject-fit: contain; display: block; margin: auto;}
                 .lightbox-caption { background: rgba(0, 0, 0, 0.7); color: white; padding: 10px; margin-top: 10px; border-radius: 5px; max-width: 70%; }
                 .lightbox-nav { position: fixed; top: 50%; transform: translateY(-50%); font-size: 50px; color: white; cursor: pointer; z-index: 10001; }
                 .prev { left: 20px; }
@@ -185,10 +208,12 @@ function createGalleryHtml(images) {
 
             <!-- Lightbox -->
             <div class="lightbox" id="lightbox">
-                <span class="close" onclick="closeLightbox()">&times;</span>
-                <img id="lightbox-img" src="">
-                <div class="lightbox-caption" id="lightbox-caption"></div>
-                <div class="caption-toggle" onclick="toggleCaption()">ℹ Caption on/off</div>
+                <div class="dot-container" id="dot-container"></div> <!-- Row of Dots -->
+                <div class="lightbox-content">
+                    <span class="close" onclick="closeLightbox()">&times;</span>
+                    <img id="lightbox-img" src="" onclick="nextImage()">
+                    <div class="lightbox-caption" id="lightbox-caption"></div>
+                </div>
                 <span class="lightbox-nav prev" onclick="prevImage()">⟨</span>
                 <span class="lightbox-nav next" onclick="nextImage()">⟩</span>
             </div>
@@ -201,6 +226,7 @@ function createGalleryHtml(images) {
                     currentIndex = index;
                     updateLightbox();
                     document.getElementById("lightbox").style.display = "flex";
+                    generateDots();
                 }
 
                 function closeLightbox() {
@@ -221,12 +247,42 @@ function createGalleryHtml(images) {
                     const { src, caption } = images[currentIndex];
                     document.getElementById("lightbox-img").src = src;
                     document.getElementById("lightbox-caption").innerText = caption;
+                    updateDots();
                 }
 
                 function toggleCaption() {
                     const caption = document.getElementById("lightbox-caption");
                     caption.style.display = caption.style.display === "none" ? "block" : "none";
                 }
+
+                              /* Dots Indicator */
+                function generateDots() {
+                    const dotContainer = document.getElementById("dot-container");
+                    dotContainer.innerHTML = "";
+
+                    images.forEach((_, i) => {
+                        const dot = document.createElement("div");
+                        dot.className = "dot";
+                        if (i === currentIndex) dot.classList.add("active");
+                        dot.addEventListener("click", () => {
+                            currentIndex = i;
+                            updateLightbox();
+                        });
+                        dotContainer.appendChild(dot);
+                    });
+                }
+
+                function updateDots() {
+                    const dots = document.querySelectorAll(".dot");
+                    dots.forEach((dot, i) => {
+                        if (i === currentIndex) {
+                            dot.classList.add("active");
+                        } else {
+                            dot.classList.remove("active");
+                        }
+                    });
+                }
+
                     
                 // Ensure the event listener is added AFTER the page loads
                 window.onload = function () {
