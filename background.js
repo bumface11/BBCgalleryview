@@ -58,44 +58,81 @@ function createGalleryHtml(images) {
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Gallery Viewer</title>
-            <style>
-                body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #222; color: white; text-align: center; }
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background: #222;
+                color: white;
+                text-align: center;
+            }
+
             /* Loading Spinner */
-                .loading-overlay {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(0, 0, 0, 0.9);
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    flex-direction: column;
-                    color: white;
-                    font-size: 20px;
-                    z-index: 9999;
-                }
-                
-                .spinner {
-                    border: 4px solid rgba(255, 255, 255, 0.3);
-                    border-top: 4px solid white;
-                    border-radius: 50%;
-                    width: 40px;
-                    height: 40px;
-                    animation: spin 1s linear infinite;
-                    margin-top: 10px;
-                }
+            .loading-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                color: white;
+                font-size: 20px;
+                z-index: 9999;
+            }
 
-                @keyframes spin {
-                    0% { transform: rotate(0deg); }
-                    100% { transform: rotate(360deg); }
-                }
+            .spinner {
+                border: 4px solid rgba(255, 255, 255, 0.3);
+                border-top: 4px solid white;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                animation: spin 1s linear infinite;
+                margin-top: 10px;
+            }
 
-                .gallery-container { display: flex; flex-wrap: wrap; gap: 10px; padding: 16px; justify-content: center; z-index: 1000;}
-                .gallery-item { cursor: pointer; transition: transform 0.3s ease; }
-                .gallery-item:hover { transform: scale(1.05); }
-                .gallery-item img { width: 150px; height: auto; border-radius: 8px; border: 2px solid white; }
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive columns */
+            grid-auto-rows: minmax(200px, auto); /* Key change: Auto row heights */
+            gap: 10px;
+            padding: 16px;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .gallery-item {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            display: flex; /* Use flexbox for alignment within grid item */
+            justify-content: center; /* Center image horizontally */
+            align-items: center; /* Center image vertically */
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            max-width: 100%; /* Image width limited to container */
+            max-height: 100%; /* Image height limited to container */
+            object-fit: contain; /* Maintain aspect ratio, fit within container */
+            border-radius: 8px;
+            border: 2px solid white;
+        }
                 
                 .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); justify-content: center; align-items: center; flex-direction: column; display: flex; z-index: 9999; }
                                 /* Lightbox Content */
