@@ -175,6 +175,20 @@ function createGalleryHtml(images) {
                 .next { right: 20px; }
                 .close { position: fixed; top: 10px; right: 20px; font-size: 30px; cursor: pointer; z-index: 10002;}
                 .caption-toggle { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.5); padding: 5px; cursor: pointer; border-radius: 5px; }
+    /* Slideshow Button */
+                .slideshow-btn {
+                    display: block;
+                    margin: 20px auto;
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    color: white;
+                    background: #444;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    transition: 0.3s;
+                }
+                .slideshow-btn:hover { background: #666; }
             </style>
         </head>
         <body>
@@ -217,9 +231,17 @@ function createGalleryHtml(images) {
                 <span class="lightbox-nav prev" onclick="prevImage()">⟨</span>
                 <span class="lightbox-nav next" onclick="nextImage()">⟩</span>
             </div>
+            <!-- Slideshow Button -->
+            <button class="slideshow-btn" id="slideshow-btn">Start Slideshow 📽️</button>
 
             <script>
                 const images = ${JSON.stringify(images)};
+
+                document.addEventListener("DOMContentLoaded", function () {
+                    const btn = document.getElementById("slideshow-btn");
+                });
+
+
                 let currentIndex = 0;
 
                 function openLightbox(index) {
@@ -299,6 +321,55 @@ function createGalleryHtml(images) {
                         }
                     });
                 };
+
+
+                function createSlideshowHtml(images) {
+                    console.log("✅ Generating slideshow HTML...");
+                    return \`
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <title>Slideshow</title>
+                            <style>
+                                body { margin: 0; background: #f5f5dc; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+                                .slideshow-container {
+                                    position: relative;
+                                    width: 80vw;
+                                    height: 80vh;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                }
+                                .slide {
+                                    position: absolute;
+                                    width: 60%;
+                                    max-width: 800px;
+                                    transform: scale(0.9);
+                                    transition: transform 1s ease-in-out, left 1s ease-in-out, top 1s ease-in-out;
+                                    left: 50%;
+                                    top: 50%;
+                                    transform: translate(-50%, -50%);
+                                    background: white;
+                                    padding: 10px;
+                                    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+                                    border-radius: 8px;
+                                    opacity: 0;
+                                }
+                                .slide.active { opacity: 1; transform: scale(1); }
+                            </style>
+                        </head>
+                        <body>
+                            <div class="slideshow-container" id="slideshow-container"></div>
+                            <script>
+                                console.log("✅ Slideshow started!");
+                                document.body.innerHTML = "<h1>Slideshow Loaded</h1>";
+                            </script>
+                        </body>
+                        </html>
+                    \`;
+                }
             </script>
         </body>
         </html>
