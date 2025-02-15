@@ -214,6 +214,7 @@ function createGalleryHtml(images) {
                     <img id="lightbox-img" src="" onclick="nextImage()">
                     <div class="lightbox-caption" id="lightbox-caption"></div>
                 </div>
+                <div class="caption-toggle" onclick="toggleCaption()">ℹ Caption on/off</div>
                 <span class="lightbox-nav prev" onclick="prevImage()">⟨</span>
                 <span class="lightbox-nav next" onclick="nextImage()">⟩</span>
             </div>
