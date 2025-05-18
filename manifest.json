@@ -1,9 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "BBC News Gallery Viewer",
-  "version": "1.0",
+  "name": "BBC Gallery Viewer",
+  "version": "1.2",
   "description": "Convert BBC 'Your Pictures' pages into a gallery viewer with lightbox, captions, and navigation.",
-  "permissions": [],
   "host_permissions": [
     "https://www.bbc.co.uk/news/articles/*"
   ],

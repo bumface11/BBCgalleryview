@@ -44,7 +44,7 @@ function extractImagesForGallery() {
         const img = figure.querySelector('img');
         const caption = figure.querySelector('figcaption');
         if (img && caption) {
-            images.push({ src: img.src, caption: caption.textContent.trim() });
+            images.push({ src: img.src, caption: caption.textContent.replace("Image caption,","").trim() });
         }
     });
     return images;
@@ -58,44 +58,82 @@ function createGalleryHtml(images) {
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Gallery Viewer</title>
-            <style>
-                body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #222; color: white; text-align: center; }
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background: #222;
+                color: white;
+                text-align: center;
+            }
+
             /* Loading Spinner */
-                .loading-overlay {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(0, 0, 0, 0.9);
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    flex-direction: column;
-                    color: white;
-                    font-size: 20px;
-                    z-index: 9999;
-                }
-                
-                .spinner {
-                    border: 4px solid rgba(255, 255, 255, 0.3);
-                    border-top: 4px solid white;
-                    border-radius: 50%;
-                    width: 40px;
-                    height: 40px;
-                    animation: spin 1s linear infinite;
-                    margin-top: 10px;
-                }
+            .loading-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                color: white;
+                font-size: 20px;
+                z-index: 9999;
+            }
 
-                @keyframes spin {
-                    0% { transform: rotate(0deg); }
-                    100% { transform: rotate(360deg); }
-                }
+            .spinner {
+                border: 4px solid rgba(255, 255, 255, 0.3);
+                border-top: 4px solid white;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                animation: spin 1s linear infinite;
+                margin-top: 10px;
+            }
 
-                .gallery-container { display: flex; flex-wrap: wrap; gap: 10px; padding: 16px; justify-content: center; z-index: 1000;}
-                .gallery-item { cursor: pointer; transition: transform 0.3s ease; }
-                .gallery-item:hover { transform: scale(1.05); }
-                .gallery-item img { width: 150px; height: auto; border-radius: 8px; border: 2px solid white; }
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+
+            .gallery-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive columns */
+                grid-auto-rows: minmax(200px, auto);
+                grid-auto-flow: dense; /* Key for packing items tightly */
+                gap: 10px;
+                padding: 16px;
+                justify-content: center;
+                z-index: 1000;
+            }
+
+        .gallery-item {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            display: flex; /* Use flexbox for alignment within grid item */
+            justify-content: center; /* Center image horizontally */
+            align-items: center; /* Center image vertically */
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            max-width: 100%; /* Image width limited to container */
+            max-height: 100%; /* Image height limited to container */
+            object-fit: contain; /* Maintain aspect ratio, fit within container */
+            border-radius: 8px;
+            border: 2px solid white;
+        }
                 
                 .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); justify-content: center; align-items: center; flex-direction: column; display: flex; z-index: 9999; }
                                 /* Lightbox Content */
@@ -107,7 +145,30 @@ function createGalleryHtml(images) {
                     justify-content: center;
                     z-index: 10000; /* Ensure elements inside are clickable */
                 }
-                .lightbox img { max-width: 90%; max-height: 80vh; border: 5px solid white; border-radius: 8px; xobject-fit: contain; display: block; margin: auto;}
+               /* Dots Navigation */
+                .dot-container {
+                    position: absolute;
+                    top: 10px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    display: flex;
+                    gap: 6px;
+                }
+
+                .dot {
+                    width: 6px;
+                    height: 6px;
+                    border-radius: 50%;
+                    background: gray;
+                    opacity: 0.5;
+                    transition: opacity 0.3s, background 0.3s;
+                }
+
+                .dot.active {
+                    background: white;
+                    opacity: 1;
+                }
+                .lightbox img { max-width: 90%; max-height: 75vh; border: 5px solid white; border-radius: 8px; xobject-fit: contain; display: block; margin: auto;}
                 .lightbox-caption { background: rgba(0, 0, 0, 0.7); color: white; padding: 10px; margin-top: 10px; border-radius: 5px; max-width: 70%; }
                 .lightbox-nav { position: fixed; top: 50%; transform: translateY(-50%); font-size: 50px; color: white; cursor: pointer; z-index: 10001; }
                 .prev { left: 20px; }
@@ -147,9 +208,12 @@ function createGalleryHtml(images) {
 
             <!-- Lightbox -->
             <div class="lightbox" id="lightbox">
-                <span class="close" onclick="closeLightbox()">&times;</span>
-                <img id="lightbox-img" src="">
-                <div class="lightbox-caption" id="lightbox-caption"></div>
+                <div class="dot-container" id="dot-container"></div> <!-- Row of Dots -->
+                <div class="lightbox-content">
+                    <span class="close" onclick="closeLightbox()">&times;</span>
+                    <img id="lightbox-img" src="" onclick="nextImage()">
+                    <div class="lightbox-caption" id="lightbox-caption"></div>
+                </div>
                 <div class="caption-toggle" onclick="toggleCaption()">ℹ Caption on/off</div>
                 <span class="lightbox-nav prev" onclick="prevImage()">⟨</span>
                 <span class="lightbox-nav next" onclick="nextImage()">⟩</span>
@@ -163,6 +227,7 @@ function createGalleryHtml(images) {
                     currentIndex = index;
                     updateLightbox();
                     document.getElementById("lightbox").style.display = "flex";
+                    generateDots();
                 }
 
                 function closeLightbox() {
@@ -183,12 +248,42 @@ function createGalleryHtml(images) {
                     const { src, caption } = images[currentIndex];
                     document.getElementById("lightbox-img").src = src;
                     document.getElementById("lightbox-caption").innerText = caption;
+                    updateDots();
                 }
 
                 function toggleCaption() {
                     const caption = document.getElementById("lightbox-caption");
                     caption.style.display = caption.style.display === "none" ? "block" : "none";
                 }
+
+                              /* Dots Indicator */
+                function generateDots() {
+                    const dotContainer = document.getElementById("dot-container");
+                    dotContainer.innerHTML = "";
+
+                    images.forEach((_, i) => {
+                        const dot = document.createElement("div");
+                        dot.className = "dot";
+                        if (i === currentIndex) dot.classList.add("active");
+                        dot.addEventListener("click", () => {
+                            currentIndex = i;
+                            updateLightbox();
+                        });
+                        dotContainer.appendChild(dot);
+                    });
+                }
+
+                function updateDots() {
+                    const dots = document.querySelectorAll(".dot");
+                    dots.forEach((dot, i) => {
+                        if (i === currentIndex) {
+                            dot.classList.add("active");
+                        } else {
+                            dot.classList.remove("active");
+                        }
+                    });
+                }
+
                     
                 // Ensure the event listener is added AFTER the page loads
                 window.onload = function () {
